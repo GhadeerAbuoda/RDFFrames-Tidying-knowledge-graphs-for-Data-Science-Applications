@@ -1,0 +1,38 @@
+% add some text here
+
+\subsection{RDF and SPARQL}
+\subsubsection{RDF Data model}
+The Resource Description Framework (RDF) is a data model for representing information about World Wide Web resources in a graph structure.\cite{perez2006semantics}. Assume there are  countably infinite pairwise disjoint infinite sets $I$,$B$, and $L$ representing  IRIs, Blank nodes, and literals respectively. Let $T = (I \cup B \cup L)$ be the set of RDF Terms. The basic component of an RDF gragh is an RDF triple which is $(s,p,o) \in (I \cup B) \times I \times T $ triple where $s$ is the $subject$, $o$ is the $object$ and $p$ is the $predicate$.  An \textbf{RDF graph} is a finite set of RDF triples. % is is a bag of RDF triples? or are the bad semantics only applicable to the solution sets?
+% can be represented as a set of nodes and a set of edges
+For an RDF graph G, let $S = \{s;\ (s, p, o) \in G\}$ be the set of subjects, $O = \{o;\ (s, p, o) \in G\}$ be the set of objects and $N = S \cup O$ the set of nodes in the graph G. Each triple represents a fact describing a relationship between the $subject$ and the $object$ of type $predicate$.
+
+\subsubsection{\sparql syntax and semantics}
+\sparql is the W3C recommendation for querying RDF data.
+Providing formal semantics for a query language is a challenging task. For \sparql, we have the W3C Recommendation that is written in natural language which is inherently ambiguous. This has resulted in different implementations in different query engines and made it confusing for users who try to learn it and use it to query their RDF data. In this project, we need to learn the semantics of \sparql to derive the equivalence between our API calls and \sparql queries we build automatically and justify the optimizations we made. There has been few attempts to provide semantics for \sparql but most of them made simplifying assumptions like omitting the bag semantics % 3 papers as examples here
+or omitting the groupby and aggregations. % do they assume the absence of null values?
+Using the bag semantics preserves the data distribution which is of paramount importance to machine learning and data science applications.\cite{sqlsemantics} Also the grouping and aggregations are one of the most useful tools for analyzing data. In this section we summarize the syntax and semantics of the relevant features of \sparql to our API as defined in \cite{kaminski2016semantics} which assumes the bag semantics and integrates all the \sparql1.1 features. Essentially, \sparql is a graph-matching query language. Given an RDF gragp G, a query consists of a pattern which is matched against G and returns a solution. Solutions are defined as multi-sets of mappings. Let $X = \{?x_1, ?x_2, ....., ?x_n\}$ be a set of variables disjoint from $T$, A \textbf{mapping} is a partial function $\mu$ from $X$ to $T$. The domain of a mapping $dom(\mu)$ is the set of variables where $\mu$ is defined. $\mu_2$ and $\mu_2$ are compatible mappings if $\mu_2 \cup \mu_2$ is also a mapping where $\mu_2 \cup \mu_2$ is the mapping obtained by extending $\mu_1$ according to $\mu_2$. % what is the union of a mapping
+$\mu_2 \thicksim \mu_2 \leftrightarrow \forall ?x \in dom(\mu_1) \cap dom(\mu_2), \mu_1(?x) = \mu_2(?x)$.
+
+Graph patterns in \sparql are defined recursively as follows: % we define them in the normal algebric way
+\begin{itemize}
+    \item a triple in $(I \cup L \cup X) \times (I \cup X) \times (I \cup L \cup X)$ is a $triple\_pattern$
+    \item if $P_1$ and $P_2$ are graph patterns, then $ P_1\Join P_2$ is a pattern.
+    \item if $P_1$ and $P_2$ are graph patterns, then $ P_1\cup P_2$ is a pattern.
+    \item ...
+    % left outer join and filter. In the paper it requires defining expressions too. We will only need expressions for filter.
+\end{itemize}
+% say we use the multi-set semantics to define the result set
+The semantics of patterns and queries is based on multisets $\Omega = (S_{\Omega}, card_{\Omega})$ where $S_{\Omega}$ is the base set of mappings, and the multiplicity function $card_{\Omega}$ assigns a positive number to each element of $card_{\Omega}$.
+% define var (Pattern) before.
+
+
+The semantics of patterns and queries over a graph G is defined as follows, where $\mu(P)$ is the pattern obtained from P by replacing its variables according to $\mu(P)$:
+\begin{itemize}
+    \item the solution of a triple pattern \textbf{t} is the multiset with $S_t$ consisting of all $\mu$ such that $dom(\mu) = var(t)$ and $\mu(t) \in G$. $card_t(\mu) = 1$ for all such $\mu$.
+    \item ...
+\end{itemize}
+
+\subsection{\sparql mappings to Relational tables}
+Let $\Omega = (S_{\Omega}, card_{\Omega})$ be the solution set returned by a \sparql result. In this section we show a correspondence between this result set and a relational table R. Let the $var(\Omega) = \{?x; ?x \in dom(\mu) \forall \mu \in S_{\Omega} \}$.  Let $L = list(var(\Omega))$ be some ordering of elements in $var(\Omega)$. Let $R = (S_R, card_R)$ be a relation where for every $\mu$ in $S_{\Omega}$, there is a tuple $\tau$ of length $card(var(\Omega)) \in S_R$ such that $\tau_i = \mu(L_i)$ and $card_R$ is the same as $card_{\Omega}$.
+ 
+

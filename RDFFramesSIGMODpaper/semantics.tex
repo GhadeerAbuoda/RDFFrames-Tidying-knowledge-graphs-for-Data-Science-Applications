@@ -1,0 +1,59 @@
+We define each dataset as a relation.
+\begin{itemize}
+    \item ds2 = ds1.expand(graph G, predicate, col\_name, direction, optional). Let relation r = predicate(col\_name) contain one column (col\_name) where the values in it represent all the subjects of triples $(subject, predicate, object)$ in the RDF graph if the direction is In-going and all the objects if the direction if Out-going. This is obtained from the evaluation of the triple pattern $t = (col_name, predicate, new_col)$ if direction is out-going or $t = (new_col, predicate, col_name)$ if direction is in-going on graph G. 
+    Then the relation ds2 = ds1 (inner\_join) r if optional is false or ds2 = ds1 (left\_outer\_join) r. 
+\end{itemize}{}
+
+\begin{itemize}
+    \item ds1.select\_columns([col1, col2, ..., colk]) = $\Pi_{col1, col2, ..., colk}(ds1)$
+\end{itemize}{}
+
+\begin{itemize}
+    \item ds1.join(ds2) = ds = ds1 $\innerjoin$ ds2 
+\end{itemize}{}
+
+\begin{itemize}
+    \item ds1.left\_outer\_join(ds2) = ds = ds1 $\leftouterjoin$ ds2 
+\end{itemize}{}
+
+\begin{itemize}
+    \item ds1.right\_outer\_join(ds2) = ds = ds1 $\rightouterjoin$ ds2 
+\end{itemize}{}
+
+
+
+\begin{itemize}
+    \item ds1.full\_outer\_join(ds2) = ds = ds1 $\fullouterjoin$ ds2
+\end{itemize}{}
+
+\begin{itemize}
+    \item ds1.filter({col: [$cond_1, cond_2, ..., cond_k$]}). Let $\varphi = cond_1 \land cond_2 \land ..... \land cond_k$ be a propositional formula where $cond_i$ is a predicate of the form ......
+    Then ds1.filter({col: [$cond_1, cond_2, ..., cond_k$]}) = $\sigma_{\varphi}(ds1)$
+\end{itemize}{}
+
+\begin{itemize}
+    \item ds1.groupby([col1, col2, ..., colk]) = 
+\end{itemize}{}
+
+
+\begin{itemize}
+    \item ds1.aggregate(col, unique=True or False) = 
+\end{itemize}{}
+
+\begin{itemize}
+    \item ds1.count(unique=True or False) = assume the input is all columns
+\end{itemize}{}
+
+
+\begin{itemize}
+    \item ds1.sort([col1, col2, ..., colk], sort\_order) =
+\end{itemize}{}
+
+
+\begin{itemize}
+    \item ds1.limit(n) =
+\end{itemize}{}
+
+\begin{itemize}
+    \item ds1.offset(n) =
+\end{itemize}{}
