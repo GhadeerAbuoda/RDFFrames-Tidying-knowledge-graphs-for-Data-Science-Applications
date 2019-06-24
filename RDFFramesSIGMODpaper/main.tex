@@ -25,7 +25,13 @@
 %% The first command in your LaTeX source must be the \documentclass command.
 \documentclass[sigconf, review, anonymous]{acmart}
 
-\makeatletter
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+
+\newcommand{\rdfframes}{RDFFrames }
+
+%\makeatletter
 \DeclareFontEncoding{LS1}{}{}
 \makeatletter
 \DeclareFontSubstitution{LS1}{stix}{m}{n}
@@ -86,6 +92,7 @@
 %%
 %% end of the preamble, start of the body of the document source.
 \begin{document}
+	
 
 %%
 %% The "title" command has an optional parameter,
@@ -234,5 +241,5 @@
 \bibliography{acmart}
 
 \end{document}
-\endinput
+
 
